@@ -1,0 +1,81 @@
+﻿<div class="side-form">
+ <flash-messages></flash-messages> 
+    <h3 class="page-header">{{title}}</h3>
+      <!-- <div class="form-inline"> -->
+    <form (ngSubmit)="addDate(paciente)">
+        <div class="form-group">
+                <label for="fecha" class="control-label">Fecha</label>
+                <input type="date" name="fecha"  [ngModel]="fecha" (ngModelChange)="fecha =
+                $event" min="fecha" max=""/>
+        </div>
+        <div class="form-group">
+                <label for="start" class="control-label">Hora inicial</label>
+                <input type="time" name="start"  [ngModel]="start" (ngModelChange)="start =
+                $event"/>
+                <!-- <input type="time" [value]="start" (input)="date = $event.target.valueAsDate" /> -->
+        </div>
+        <div class="form-group">
+            <label for="end" class="control-label">Hora final</label>
+                <input type="time" name="end"  [ngModel]="end" (ngModelChange)="end =
+                $event" min="start"/>
+                <!-- <input type="time" [value]="end" (input)="start = $event.target.valueAsDate" /> -->
+        </div>
+        <div class="form-group">
+            <label for="pac" class="control-label">Paciente</label>
+            <select name="pac" [(ngModel)]="paciente">
+                <option *ngFor="let i of pacientes" [ngValue]="i._id">{{i.nombres}} {{i.apellido1}} {{i.apellido2}}</option>
+             </select>
+        </div> 
+<!--         <div class="form-group">
+            <label for="co1" class="control-label">Color primario</label>
+            <input
+                name="co1"
+                type="color"
+                [(ngModel)]="co1"
+            >
+        </div> -->
+        <div class="form-group">
+            <label for="co2" class="control-label">Color</label>
+            <input
+                name="co2"
+                type="color"
+                [(ngModel)]="co2">
+        </div> 
+            <!-- (change)="refresh.next()"> -->
+
+<!--         <form class="form-inline">
+            <div class="form-group">
+              <input type="search"
+                     class="form-control"
+                     placeholder="Escriba el nombre del paciente o cedula"
+                     [formControl]="searchField"
+              >
+            </div>
+          </form> -->
+          
+<!--           <div class="text-center">
+            <p class="lead" *ngIf="loading">Loading...</p>
+          </div>
+          
+          <ul class="list-group">
+            <li class="list-group-item"
+            *ngFor="let i of pacientes | async">
+            <i class="far fa-user-circle">{{i.nombres}} {{i.apellido1}} {{i.apellido2}}</i>
+        </li>
+    </ul> -->
+    <!-- <img src="{{track.thumbnail}}"> -->
+
+
+        <div class="form-group" *ngIf="date.created_at">
+                <hr>
+                <label class="control-label">Fecha Creación: {{date.created_at| date: 'yyyy-MM-dd hh:mm a' : date.offset}}   //   Fecha Modificación: {{date.updated_at| date: 'yyyy-MM-dd hh:mm a' : date.offset}}</label>
+        </div>
+ <flash-messages></flash-messages> 
+        <div class="form-group">                
+            <a class="btn btn-warning" [routerLink]= "['/dashboard/dashboard',this.userId]" [queryParams]="{name:name}">Regresar</a>
+            <!-- <button (click)="addMaestro()" class="btn btn-default">Guardar</button> -->
+            <button class="btn btn-primary">Guardar</button> 
+            <a *ngIf="dateId!=='new' && date.nota==undefined" class="btn btn-danger" (click)= "deleteDate(date._id)">Cancelar cita</a>
+        </div>
+    </form>
+</div>

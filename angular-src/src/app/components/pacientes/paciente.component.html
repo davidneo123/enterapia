@@ -1,0 +1,139 @@
+<div class="side-form">
+<flash-messages></flash-messages>
+<h3 class="page-header">{{title}}</h3>
+    <!-- <div class="form-inline"> -->
+    <form (ngSubmit)="onRegisterSubmit()">
+        <span class="form-inline">  
+           <div class="form-group" >
+             <label for="tip" class="control-label">Tipo Documento</label>
+             <select name="tip" [(ngModel)]="paciente.tip">
+                <option *ngFor="let i of tipos" [ngValue]="i.cod">{{i.des}}</option>
+             </select>
+           </div>
+           <div class="form-group" >
+            <label for="id" class="control-label">Número de documento</label>      
+            <input type="text" name="id" [(ngModel)]="paciente.id" class="form-control" required="true" placeholder="Documento de identidad" />          
+           </div>
+        </span>
+        <hr>
+        <span class="form-inline">  
+        <div class="form-group">
+            <label for="nombres" class="control-label">Nombres</label>
+            <input type="text" name="nombres" [(ngModel)]="paciente.nombres" class="form-control" required="true" placeholder="Nombre" />
+        </div>
+          <div class="form-group">
+            <label for="apellido1" class="control-label">Primer Apellido</label>
+            <input type="text" name="apellido1" [(ngModel)]="paciente.apellido1" class="form-control" required="true" placeholder="Primer Apellido" />
+        </div>
+        <div class="form-group">
+            <label for="apellido2" class="control-label">Segundo Apellido</label>
+            <input type="text" name="apellido2" [(ngModel)]="paciente.apellido2" class="form-control" required="true" placeholder="Segundo Apellido" />
+        </div>        
+        <div class="form-group">
+            <label for="email" class="control-label">Email</label>
+            <input type="text" name="email" [(ngModel)]="paciente.email" class="form-control" placeholder="Correo electrónico" />
+        </div>
+        <div class="form-group">
+            <label for="genero" class="control-label">Género</label>
+             <select name="genero" [(ngModel)]="paciente.genero">
+                <option *ngFor="let i of generos" [ngValue]="i.cod">{{i.des}}</option>
+             </select>
+        </div>
+        <div class="input-group fluid">
+            <label>Nacimiento</label>
+            <input type="date" name="fechanac"  [ngModel]="paciente.fechanac | date:'yyyy-MM-dd'" (ngModelChange)="paciente.fechanac =
+            $event" min="1900-01-01" max=""/>
+        </div>
+
+<!--  
+            (input)="updateDate($event)"
+    
+    <div class="form-group">
+         <label for="fechanac" class="control-label">Fecha de nacimiento</label>
+         <input type="date" id="fechanac" [(ngModel)]="paciente.fechanac" name="fechanac" class="form-control" required/>
+        </div> -->
+        <div class="form-group">
+            <label for="estado" class="control-label">Estado Civil</label>
+            <select name="estado" [(ngModel)]="paciente.estado">
+                <option *ngFor="let i of estados" [ngValue]="i.cod">{{i.des}}</option>
+             </select>
+        </div>
+        <div class="form-group" id="contenedor" >
+            <label for="ciudad" class="control-label">Ciudad</label>
+            <select name="ciudad" [(ngModel)]="paciente.ciudad">
+                <option *ngFor="let i of ciudades" [ngValue]="i.cod">{{i.des}}</option>
+             </select>
+        </div>
+        <div class="form-group" id="contenedor" >
+            <label for="localidad" class="control-label">Localidad</label>
+            <select name="localidad" [(ngModel)]="paciente.localidad">
+                <option *ngFor="let i of localidades" [ngValue]="i.cod">{{i.des}}</option>
+             </select>
+        </div>
+        <div class="form-group" id="contenedor" >
+            <label for="barrio" class="control-label">Barrio</label>
+            <select name="barrio" [(ngModel)]="paciente.barrio">
+                <option *ngFor="let i of barrios" [ngValue]="i.cod">{{i.des}}</option>
+             </select>
+        </div>
+        <div class="form-group">
+            <label for="direccion" class="control-label">Dirección</label>
+            <input type="text" name="direccion" [(ngModel)]="paciente.direccion" class="form-control" required="true" placeholder="Dirección" />
+        </div>
+        <div class="form-group">
+            <label for="telefono" class="control-label">Telefono</label>
+            <input type="text" name="telefono" [(ngModel)]="paciente.telefono" class="form-control" required="true" placeholder="Telefonos" />
+        </div>
+        <div class="form-group">
+            <label for="aseguradora" class="control-label">Aseguradora</label>
+             <select name="aseguradora" [(ngModel)]="paciente.aseguradora">
+                <option *ngFor="let i of aseguradoras" [ngValue]="i.cod">{{i.des}}</option>
+             </select>
+        </div>
+        <div class="form-group">
+            <label for="vinculacion" class="control-label">Vinculación</label>
+             <select name="vinculacion" [(ngModel)]="paciente.vinculacion">
+                <option *ngFor="let i of vinculaciones" [ngValue]="i.cod">{{i.des}}</option>
+             </select>
+        </div>  
+        <div class="form-group">
+            <label for="ocupacion" class="control-label">Ocupación</label>
+             <select name="ocupacion" [(ngModel)]="paciente.ocupacion">
+                <option *ngFor="let i of ocupaciones" [ngValue]="i.cod">{{i.des}}</option>
+             </select>
+        </div>  
+        <div class="form-group">
+        <div class="form-group">
+            <label for="responsable" class="control-label">Responsable</label>
+            <input type="text" name="responsable" [(ngModel)]="paciente.responsable" class="form-control" required="true" placeholder="Responsable" />
+        </div>
+        <div class="form-group">
+            <label for="parentescoresponsable" class="control-label">Parentesco Responsable</label>
+             <select name="parentescoresponsable" [(ngModel)]="paciente.parentescoresponsable">
+                <option *ngFor="let i of parentezcos" [ngValue]="i.cod">{{i.des}}</option>
+             </select>
+        </div>
+        <div class="form-group">
+            <label for="telresponsable" class="control-label">Teléfono Responsable</label>
+            <input type="text" name="telresponsable" [(ngModel)]="paciente.telresponsable" class="form-control" required="true" placeholder="Telefono Responsable" />
+        </div>  
+        </div>
+        </span>
+        <div class="form-group" *ngIf="paciente.created_at">
+            <hr>
+            <label class="control-label">Fecha Creación: {{paciente.created_at| date: 'yyyy-MM-dd HH:mm a' : paciente.offset}}</label>
+            <label class="control-label">Fecha Modificación: {{paciente.updated_at| date: 'yyyy-MM-dd HH:mm a' : paciente.offset}}</label>
+        </div>
+        <div class="form-inline"> 
+            <div class="form-group">
+            <label for="act" class="control-label"><input type="checkbox" name="act" [(ngModel)]="paciente.act" class="form-control"/>Activo</label>
+            </div>
+            <div class="form-group">
+            <flash-messages></flash-messages>
+            <a class="btn btn-warning" [routerLink]="['/maestros/pacientes']">Cancelar</a>
+                    <!-- <button (click)="addMaestro()" class="btn btn-default">Guardar</button> -->
+            <button class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </form>
+</div>

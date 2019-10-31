@@ -1,0 +1,69 @@
+<div class="row">
+<div class="column left" style="background-color:gray;color:black;padding:20px;margin-bottom: 15px;">
+  <div class="container" id="contenedor">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">{{title}}</h3>
+          <form class="form-inline" autocomplete="off">
+            <div class="form-group">
+              <input type="search"
+              class="form-control"
+              placeholder="Ingrese nombre o cédula"
+              [(ngModel)] = "searchTerm" (ngModelChange) = "search()" name="pac"><!-- [formControl]="searchField" -->
+            </div>
+            <div class="text-center">
+                <p class="lead" *ngIf="loading">Cargando...</p>
+              </div>
+              <h6 class="card-subtitle mb-2" *ngIf="searchTerm!==''">Nombre | Cedula</h6>
+              <ul class="list-group" style="width:250px;">
+                <li class="list-group-item"
+                *ngFor="let pac of items">
+                  <a
+                  (click)="goToHistory(pac._id)" style="cursor: pointer;">
+                  <i class="fa fa-address-card-o" aria-hidden="true"></i>
+                  {{pac.nombres}} {{pac.apellido1}} {{pac.apellido2}} | {{pac.id}}
+                  </a>
+                </li>
+              </ul>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div id="contenedor">
+      <app-paciente-view></app-paciente-view>
+    </div>
+  </div>
+  <!-- <div class="clearfix visible-xs"></div>     -->
+
+    <div class="column rigth">
+        <router-outlet></router-outlet>
+    </div>
+
+<!-- <input type="text" (keyup)="onKeyUp($event)"/>
+
+<p>VAlor: {{busq}}</p>
+<hr> -->
+<!--
+        <form class="form-inline">
+          <div class="form-group">
+            <input type="search"
+            (keyup)="onKeyUp($event)"
+              class="form-control"
+              placeholder="Escriba el nombre del paciente o cedula"
+              [formControl]="searchField"
+            >
+          </div>
+        </form>
+        <div class="text-center">
+        <p class="lead" *ngIf="loading">Loading...</p>
+        </div>
+
+        <ul class="list-group">
+          <li class="list-group-item"
+          *ngFor="let i of pacientes | async">
+          <i class="far fa-user-circle">{{i.nombres}} {{i.apellido1}} {{i.apellido2}}</i>
+          </li>
+        </ul>
+ -->
+
+    <!-- <option *ngFor="pacs" [ngValue]="pacs._id">{{pacs.nombres}} {{pacs.apellido1}} {{pacs.apellido2}}</option> -->

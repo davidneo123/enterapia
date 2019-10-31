@@ -1,0 +1,43 @@
+<div>
+    <h1>{{title}} </h1>
+    <hr>
+    <a [routerLink]="['/maestros/paciente-edit','new']"  class="btn btn-default">Nuevo</a>
+    <div class="table-responsive">
+        <table class="generic-table table table-bordered table-border table-hover">
+            <tr class="success">
+                <th>Tipo Doc</th>
+                <th>Documento</th>
+                <th>Nombre</th>
+                <th>Fecha nacimiento</th>
+         <!--        <th>Género</th>
+                <th>Estado</th>
+                <th>Ciudad</th> -->
+                <th>Correo Electrónico</th>
+                <th>Creado</th>
+                <th>Modificado</th>
+                <th>Activo</th>
+                <th class="delete-column"></th>
+                <th class="edit-column"></th>
+            </tr>
+            <tr *ngFor="let paciente of pacientes">
+                <td>{{paciente.tip}}</td>
+                <td><a [routerLink]="['/maestros/paciente-edit', paciente._id]">{{paciente.id}}</a></td>
+                <td><a [routerLink]="['/maestros/paciente-edit', paciente._id]">{{paciente.nombres}} {{paciente.apellido1}} {{paciente.apellido2}}</a></td>
+                <td>{{paciente.fechanac| date: 'yyyy-MM-dd'}}</td>
+               <!--  <td>{{paciente.genero}}</td>
+                <td>{{paciente.estado}}</td>
+                <td>{{paciente.ciudad}}</td> -->
+                <td>{{paciente.email}}</td>
+                <td>{{paciente.created_at| date: 'yyyy-MM-dd HH:mm a' : paciente.offset}}</td>
+                <td>{{paciente.updated_at| date: 'yyyy-MM-dd HH:mm a' : paciente.offset}}</td>
+                <td><input type="checkbox" name="act" [(ngModel)]="paciente.act" disabled="true"/></td>
+                <td><a [routerLink]="['/maestros/paciente-edit', paciente._id]" class="btn btn-xs btn-default">Editar</a></td>
+                <td><a (click)="deletePaciente(paciente._id)" class="btn btn-xs btn-danger">Borrar</a></td>
+            </tr>
+        </table>
+    </div>
+    <h3>Cantidad: {{pacientescount}}</h3>
+</div>
+<div class="view-side-form">
+        <router-outlet></router-outlet>
+</div>

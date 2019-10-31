@@ -1,0 +1,35 @@
+<div><h1>{{title}} </h1>
+<hr>
+<a [routerLink]="['/maestros/maestro-edit', 'new']" [queryParams]="{tipo: tipo}"  class="btn btn-default">Nuevo</a>
+<div class="table-responsive">
+    <table class="generic-table table table-bordered table-border table-hover">
+        <tr class="success">
+            <th>Tipo</th>
+            <th>Orden</th>
+            <th>Código</th>
+            <th>Descripción</th>
+           <!--  <th>Atributo1</th>
+            <th>Atributo2</th>
+            <th>Atributo3</th> -->
+            <th>Activo</th>
+            <th class="delete-column"></th>
+            <th class="edit-column"></th>
+        </tr>
+        <tr *ngFor="let maestro of maestros">
+            <td>{{maestro.tipo}}</td>
+            <td>{{maestro.ord}}</td>
+            <td><a [routerLink]="['/maestros/maestro-edit', maestro._id]" [queryParams]="{tipo: tipo}">{{maestro.cod}}</a></td>
+            <td><a [routerLink]="['/maestros/maestro-edit', maestro._id]" [queryParams]="{tipo: tipo}">{{maestro.des}}</a></td>
+           <!--  <td>{{maestro.atri1}}</td>
+            <td>{{maestro.atri2}}</td>
+            <td>{{maestro.atri3}}</td> -->
+            <td><input type="checkbox" name="act" [(ngModel)]="maestro.act" disabled="true"/></td>
+            <td><a [routerLink]="['/maestros/maestro-edit', maestro._id]" [queryParams]="{tipo: tipo}" class="btn btn-xs btn-default">Editar</a></td>
+            <td><a (click)="deleteMaestro(maestro._id)" class="btn btn-xs btn-danger">Borrar</a></td>
+        </tr>
+    </table>
+</div>
+<h3>Cantidad: {{maestroscount}}</h3></div>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

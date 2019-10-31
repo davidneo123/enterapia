@@ -1,0 +1,627 @@
+﻿<div class="side-form container" id="contenedor">
+    <flash-messages></flash-messages> 
+    <ng-template #loading>
+        <div class="text-center">
+            <i class="fa fa-spin fa-spinner fa-5x"></i>
+            <br>---Cargando las citas---
+        </div>
+    </ng-template>
+    <div class="container"> 
+       <h1>{{title}}<span *ngIf="nota.created_at" style="font-size: 18px"> Creación: {{nota.created_at| date: 'dd/MM/yyyy hh:mm a' : nota.offset}} // Modificación: {{nota.updated_at| date: 'dd/MM/yyyy hh:mm a' : nota.offset}}</span><span *ngIf="!nota.created_at" style="font-size: 20px;background-color: thistle">Hora sistema: {{fecha| date: 'dd/MM/yyyy hh:mm a' : nota.offset}}</span><button (click)="addNota()" *ngIf="notaId!=='new'" class="btn btn-primary">Registrar Evolución</button></h1>
+    </div>
+    <div class="form-group"> 
+        <form (ngSubmit)="addNota()">
+            <div class="form-group main_content">
+                <label for="tipo" class="control-label">Tipo</label>
+                <select name="tipo" [(ngModel)]="nota.tipo">
+                    <option *ngFor="let i of tipos" [ngValue]="i.cod">{{i.des}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="motivo" class="control-label">Motivo</label>
+                <textarea  wrap="off" rows="3" cols="70" name="motivo" [(ngModel)]="nota.motivo" class="form-control" placeholder="Redacte el motivo de la consulta"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="enfact" class="control-label">Enfermedad actual</label>
+                <textarea  wrap="off" rows="3" cols="70" name="enfact" [(ngModel)]="nota.enfact" class="form-control" placeholder="Enfermedad Actual"></textarea>
+            </div>
+            <div class="form-group  main_content" *ngIf= "toggleAnt">
+                <h2>Antecedentes</h2>
+                <div class="form-group">
+                    <label for="personales" class="control-label">Antecedentes personales</label>
+                    <textarea  wrap="off" rows="3" cols="25" name="personales" [(ngModel)]="ant.antper" class="form-control" placeholder="Antecedentes personales"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="patologicos" class="control-label">Antecedentes patológicos</label>
+                    <textarea  wrap="off" rows="3" cols="25" name="patologicos" [(ngModel)]="ant.antpat" class="form-control" placeholder="Antecedentes patológicos"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="farmacologicos" class="control-label">Antecedentes farmacológicos</label>
+                    <textarea  wrap="off" rows="3" cols="25" name="farmacologicos" [(ngModel)]="ant.antfar" class="form-control" placeholder="Antecedentes farmacológicos"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="psicologicos" class="control-label">Antecedentes psicológicos</label>
+                    <textarea  wrap="off" rows="3" cols="25" name="psicologicos" [(ngModel)]="ant.psico" class="form-control" placeholder="Antecedentes psicológicos y/o psiquiatricos"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="religiones" class="control-label">Antecedentes religiosos</label>
+                    <textarea  wrap="off" rows="3" cols="25" name="religiones" [(ngModel)]="ant.antrel" class="form-control" placeholder="Antecedentes religiosos"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="familiares" class="control-label">Antecedentes familiares</label>
+                    <textarea  wrap="off" rows="3" cols="25" name="familiares" [(ngModel)]="ant.antfam" class="form-control" placeholder="Antecedentes familiares"></textarea>
+                </div>
+                <div class="form-group">
+                        <h4>Parientes</h4>
+                    <div class="table-responsive" >
+                        <table class="table nota">
+                            <tr> 
+                                <td>
+                                    <label for="nombre" class="control-label">Nombre</label>
+                                    <input type="text" name="nombre" [(ngModel)]="pariente.nombre" class="form-control" placeholder="Nombre Pariente">
+                                </td>
+                                <td><label for="parentezco" class="control-label">Parentezco</label>
+                                    <input type="text" name="parentezco" [(ngModel)]="pariente.parentezco" class="form-control" placeholder="Parentezco">
+                                </td>
+                                <td> <label for="edad" class="control-label">Edad</label>
+                                    <input type="number"  min="1" max="100" onkeydown="return false" default="30" name="edad" [(ngModel)]="pariente.edad" class="form-control" placeholder="Edad">
+                                </td>
+                                <td> <label for="ocupacion" class="control-label">Ocupación</label>
+                                    <input type="text" name="ocupacion" [(ngModel)]="pariente.ocupacion" class="form-control" placeholder="Ocupación">
+                                </td>
+                                <td> <label for="satisfaccionPar" class="control-label">Satisfacción</label>
+                                    <input style="width:auto;" type="number"  min="1" max="10" onkeydown="return false" name="satisfaccionPar" [(ngModel)]="pariente.satisfaccion" class="form-control" placeholder="Satisfacción">
+                                </td>
+                            </tr>
+                            <button (click)="addPariente()" class="btn btn-default btn-xs"><i class="fa fa-plus" aria-hidden="true"></i></button> 
+                            <tr style="font-weight: bold" *ngIf="parientes.length>1000"> 
+                                <td>Nombre</td>            
+                                <td>Parentezco </td>            
+                                <td>Edad</td>            
+                                <td>Ocupación</td>            
+                                <td>Satisfacción</td>            
+                            </tr>
+                            <tr *ngFor="let item of parientes;let i = index">
+                                <td>
+                                    <button (click)="delPariente(i)" class="btn btn-danger btn-xs"><i class="fa fa-times" aria-hidden="true"></i></button>                         
+                                    {{item.nombre}}
+                                </td>
+                                <td> 
+                                    {{item.parentezco}}
+                                </td>
+                                <td> 
+                                    {{item.edad}} años
+                                </td>
+                                <td> 
+                                    {{item.ocupacion}}
+                                </td>
+                                <td> 
+                                    {{item.satisfaccion}}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group main_content  form-inline" style="background-color: darkslategrey">
+                <h3 style="font-weight: bold; color:white;">Matrimonio</h3>
+                <div class="form-group">
+                    <label for="nombrePar" class="control-label">Nombre pareja</label>
+                    <input type="text" name="nombrePar" [(ngModel)]="mat.nombre" class="form-control" placeholder="Nombre de la pareja">
+                </div>
+                <div class="form-group">
+                    <label for="ocupacionPar" class="control-label">Ocupación</label>
+                    <input type="text" name="ocupacionPar" [(ngModel)]="mat.ocupacion" class="form-control" placeholder="Ocupación pareja">
+                </div>
+                <div class="form-group">
+                    <label for="edadPar" class="control-label">Edad</label>
+                    <input type="number"  min="1" max="100" default="30" onkeydown="return false" name="edadPar" [(ngModel)]="mat.edad" class="form-control" placeholder="Edad pareja">
+                </div>
+                <div class="form-group">
+                    <label for="entidad" class="control-label">Entidad</label>
+                    <input type="text" name="entidad" [(ngModel)]="mat.entidad" class="form-control" placeholder="Entidad Pareja">
+                </div>
+                <div class="form-group">
+                    <label for="escolaridad" class="control-label">Escolaridad</label>
+                    <input type="text" name="escolaridad" [(ngModel)]="mat.escolaridad" class="form-control" placeholder="Escolaridad">
+                </div>
+                <div class="form-group">
+                    <label for="relacion" class="control-label">Tiempo Relación</label>
+                    <input type="text" name="relacion" [(ngModel)]="mat.relacion" class="form-control" placeholder="Relación">
+                </div>
+                <div  class="form-group">
+                    <label for="convivencia" class="control-label">Tiempo Convivencia</label>
+                    <input type="text" name="convivencia" [(ngModel)]="mat.convivencia" class="form-control" placeholder="Convivencia"/>
+                </div>
+                <div class="nota form-group"> <h4 style="font-weight: bold">Satisfacción Matrimonio</h4>
+                    <div  class="form-group">
+                        <label for="comunicacion" class="control-label">Comunicación con el cónyuge</label>
+                        <input style="width:auto;" type="number"  min="1" max="10" onkeydown="return false" name="comunicacion" [(ngModel)]="mat.comunicacion" class="form-control" placeholder="Comunicación"/>
+                    </div>
+                    <div  class="form-group">
+                        <label for="responsabilidades" class="control-label">Responsabilidades del hogar asumidas por el cónyuge</label>
+                        <input style="width:auto;" type="number"  min="1" max="10" onkeydown="return false" name="responsabilidades" [(ngModel)]="mat.responsabilidades" class="form-control" placeholder="Responsabilidades"/>
+                    </div>
+                    <div  class="form-group">
+                        <label for="manifestaciones" class="control-label">Manifestaciones afectivas del cónyuge</label>
+                        <input style="width:auto;" type="number"  min="1" max="10" onkeydown="return false" name="manifestaciones" [(ngModel)]="mat.manifestaciones" class="form-control" placeholder="Manifestaciones"/>
+                    </div>
+                    <div  class="form-group">
+                        <label for="relaciones" class="control-label">Relaciones sexuales</label>
+                        <input style="width:auto;" type="number"  min="1" max="10" onkeydown="return false" name="relaciones" [(ngModel)]="mat.relaciones" class="form-control" placeholder="Relaciones"/>
+                    </div>
+                    <div  class="form-group">
+                        <label for="actividades" class="control-label">Actividades sociales compartidas</label>
+                        <input style="width:auto;" type="number"  min="1" max="10" onkeydown="return false" name="actividades" [(ngModel)]="mat.actividades" class="form-control" placeholder="Actividades"/>
+                    </div>
+                    <div  class="form-group">
+                        <label for="recreacion" class="control-label">Recreación y tiempo libre</label>
+                        <input style="width:auto;" type="number"  min="1" max="10" onkeydown="return false" name="recreacion" [(ngModel)]="mat.recreacion" class="form-control" placeholder="Recreación"/>
+                    </div>
+                    <div  class="form-group">
+                        <label for="finanzas" class="control-label">Manejo de finanzas</label>
+                        <input style="width:auto;" type="number"  min="1" max="10" onkeydown="return false" name="finanzas" [(ngModel)]="mat.finanzas" class="form-control" placeholder="finanzas"/>
+                    </div>
+                    <div  class="form-group">
+                        <label for="hijos" class="control-label">Métodos de crianza de los hijos</label>
+                        <input style="width:auto;" type="number"  min="1" max="10" onkeydown="return false" name="hijos" [(ngModel)]="mat.hijos" class="form-control" placeholder="Hijos"/>
+                    </div>
+                    <div  class="form-group">
+                        <label for="relfam" class="control-label">Relaciones con la familia del cónyuge</label>
+                        <input style="width:auto;" type="number"  min="1" max="10" onkeydown="return false" name="relfam" [(ngModel)]="mat.familiares" class="form-control" placeholder="Familiares"/>
+                    </div>
+                    <div  class="form-group">
+                        <label for="satisfaccionMat" class="control-label">Satisfacción general</label>
+                        <input style="width:auto;" type="number"  min="1" max="10" onkeydown="return false" name="satisfaccionMat" [(ngModel)]="mat.satisfaccion" class="form-control" placeholder="Satisfacción"/>
+                    </div>
+                </div>                 
+            </div>
+            <div class="form-group main_content contenedor">
+                <div class="form-group">           
+                    <h3 style="font-weight: bold">Ambiente social</h3>
+                    <H4 style="font-weight: bold">Con quien convive actualmente el/la paciente</H4>
+                    <div class="table-responsive" >
+                        <table class="table nota">
+                            <tr> 
+                                <td>
+                                    <label for="nombre2" class="control-label">Nombre</label>
+                                    <input type="text" name="nombre2" [(ngModel)]="convive.nombre" class="form-control" placeholder="Nombre Pariente">
+                                </td>
+                                <td> <label for="edad2" class="control-label">Edad</label>
+                                    <input type="number"  min="1" max="100" onkeydown="return false" default="30" name="edad2" [(ngModel)]="convive.edad" class="form-control" placeholder="Edad">
+                                </td>
+                                <td><label for="relacion" class="control-label">Relación (pariente,amigo, etc.)</label>
+                                    <input type="text" name="relacion" [(ngModel)]="convive.relacion" class="form-control" placeholder="Relación">
+                                </td>
+                            </tr>
+                            <button (click)="addConviven()" class="btn btn-default btn-xs"><i class="fa fa-plus" aria-hidden="true"></i></button> 
+                            <tr style="font-weight: bold" *ngIf="conviven.length>1000"> 
+                                <td >Nombre </td>            
+                                <td >Edad </td>            
+                                <td >Relación </td>            
+                            </tr>
+                            <tr *ngFor="let item of conviven;let i = index">
+                                <td>
+                                    <button (click)="delConviven(i)" class="btn btn-danger btn-xs"><i class="fa fa-times" aria-hidden="true"></i></button>                         
+                                    {{item.nombre}}
+                                </td>
+                                <td> 
+                                    {{item.edad}} años
+                                </td>
+                                <td> 
+                                    {{item.relacion}}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            <div >           
+                <H4 style="font-weight: bold">¿Qué personas son importantes para el/la paciente? </H4>
+                <p>Personas con las que actualmente tiene alguna relación continua o permanente, </p>
+                <p>sin repetir alguno de los nombres que se escribieron en el punto anterior</p>
+                <div class="table-responsive" >
+                    <table class="table nota">
+                        <tr> 
+                            <td>
+                                <label for="nombre3" class="control-label">Nombre</label>
+                                <input type="text" name="nombre3" [(ngModel)]="importante.nombre" class="form-control" placeholder="Nombre persona importante">
+                            </td>
+                            <td> <label for="edad3" class="control-label">Edad</label>
+                                <input type="number"  min="1" max="100" onkeydown="return false" default="30" name="edad3" [(ngModel)]="importante.edad" class="form-control" placeholder="Edad">
+                            </td>
+                            <td><label for="relacion2" class="control-label">Relación (pariente,amigo, etc.)</label>
+                                <input type="text" name="relacion2" [(ngModel)]="importante.relacion" class="form-control" placeholder="Relación">
+                            </td>
+                        </tr>
+                        <button (click)="addImportante()" class="btn btn-default btn-xs"><i class="fa fa-plus" aria-hidden="true"></i></button> 
+                        <tr style="font-weight: bold" *ngIf="importantes.length>1000"> 
+                            <td>Nombre </td>            
+                            <td>Edad </td>            
+                            <td>Relación </td>            
+                        </tr>
+                        <tr *ngFor="let item of importantes;let i = index">
+                            <td>
+                                <button (click)="delImportante(i)" class="btn btn-danger btn-xs"><i class="fa fa-times" aria-hidden="true"></i></button>                         
+                                {{item.nombre}}
+                            </td>
+                            <td> 
+                                {{item.edad}} años
+                            </td>
+                            <td> 
+                                {{item.relacion}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="frecuencia" class="control-label">¿Con que frecuencia participa en actividades sociales? <h6> (reuniones con amigos, fiestas, paseos, etc.)</h6></label>
+                <input type="number" style="width:auto;" min="1" max="10" onkeydown="return false" name="frecuencia" [(ngModel)]="soc.frecuencia" class="form-control" placeholder="Frecuencia">
+            </div>
+            <div class="form-group">
+                <label for="satisfaccion" class="control-label">Nivel de satisfacción<h6>General</h6></label>
+                <input type="number" style="width:auto;" min="1" max="10" onkeydown="return false" name="satisfaccion" [(ngModel)]="soc.satisfaccion" class="form-control" placeholder="Satisfacción">
+            </div>
+            <div class="form-group">
+                <label for="observaciones" class="control-label">Observaciones</label>
+                <textarea wrap="off" rows="2" cols="80" style="width:auto;" name="observaciones" [(ngModel)]="soc.observaciones" class="form-control" placeholder="Observaciones"></textarea>
+            </div>
+            </div>
+            <div class="form-group nota">
+                 <div class="form-group">           
+                    <h3>INFORMACIÓN ACADÉMICA</h3>
+                    <div class="table-responsive" style="width:auto">
+                            <h4 >Orden cronológico de los colegios en los cuales ha estudiado el/la paciente</h4>
+                        <table class="table main_content">
+                            <tr> 
+                                <td>
+                                    <label for="edad4" class="control-label">Edad</label>
+                                    <input type="number" style="width:auto;" min="1" max="100" onkeydown="return false" name="edad4" [(ngModel)]="colegio.edad" class="form-control" placeholder="Edad estudio">
+                                </td>
+                                <td> <label for="fecha" class="control-label">Fecha</label>
+                                    <input type="date" style="width:auto;" name="fecha" [(ngModel)]="colegio.fecha" class="form-control" placeholder="Fecha">
+                                </td>
+                                <td><label for="colegio" class="control-label">Nombre Colegio</label>
+                                    <input type="text" style="width:auto;" name="colegio" [(ngModel)]="colegio.colegio" class="form-control" placeholder="Colegio">
+                                </td>
+                                <td><label for="cursos" class="control-label">Cursos</label>
+                                    <input type="text" style="width:auto;"  name="cursos" [(ngModel)]="colegio.cursos" class="form-control" placeholder="Cursos">
+                                </td>
+                            </tr>
+                            <button (click)="addColegio()" class="btn btn-default btn-xs"><i class="fa fa-plus" aria-hidden="true"></i></button> 
+                            <tr style="font-weight: bold" *ngIf="colegios.length>1000"> 
+                                <td>Edad</td>            
+                                <td>Fecha</td>            
+                                <td>Colegio</td>            
+                                <td>Cursos</td>                                            
+                            </tr>
+                            <tr *ngFor="let item of colegios;let i = index">
+                                <td>
+                                    <button (click)="delColegio(i)" class="btn btn-danger btn-xs"><i class="fa fa-times" aria-hidden="true"></i></button>                         
+                                    {{item.edad}} años
+                                </td>
+                                <td> 
+                                    {{item.fecha| date: 'dd/MM/yyyy'}}
+                                </td>
+                                <td> 
+                                    {{item.colegio}}
+                                </td>
+                                <td> 
+                                    {{item.cursos}}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div >           
+                    <h4>Descripción de los estudios universitarios</h4>
+                    <div class="table-responsive" >
+                        <table class="table main_content">
+                            <tr> 
+                                <td>
+                                    <label for="edad5" class="control-label">Edad</label>
+                                    <input type="number" style="width:auto;" min="1" max="100" onkeydown="return false" name="edad5" [(ngModel)]="universidad.edad" class="form-control" placeholder="Edad estudio">
+                                </td>
+                                <td> <label for="fecha2" class="control-label">Fecha</label>
+                                    <input type="date" style="width:auto;" name="fecha2" [(ngModel)]="universidad.fecha" class="form-control" placeholder="Fecha">
+                                </td>
+                                <td><label for="institucion" class="control-label">Nombre Institución</label>
+                                    <input type="text"style="width:auto;" name="institucion" [(ngModel)]="universidad.institucion" class="form-control" placeholder="Institución">
+                                </td>
+                                <td><label for="carrera" class="control-label">Carrera</label>
+                                    <input type="text" style="width:auto;"  name="carrera" [(ngModel)]="universidad.carrera" class="form-control" placeholder="Carrera">
+                                </td>
+                            </tr>
+                            <button (click)="addUniversidad()" class="btn btn-default btn-xs"><i class="fa fa-plus" aria-hidden="true"></i></button> 
+                            <tr style="font-weight: bold" *ngIf="universidades.length>1000"> 
+                                <td>Edad</td>            
+                                <td>Fecha</td>            
+                                <td>Institución</td>  
+                                <td>Carrera</td>                                                  
+                            </tr>
+                            <tr *ngFor="let item of universidades;let i = index">
+                                <td>
+                                    <button (click)="delUniversidad(i)" class="btn btn-danger btn-xs"><i class="fa fa-times" aria-hidden="true"></i></button>                         
+                                    {{item.edad}} años
+                                </td>
+                                <td> 
+                                    {{item.fecha| date: 'dd/MM/yyyy'}}
+                                </td>
+                                <td> 
+                                    {{item.institucion}}
+                                </td>
+                                <td> 
+                                    {{item.carrera}}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <h4>DESEMPEÑO ACADÉMICO</h4>
+                    <div class="form-group">
+                        <label for="general" class="control-label">Nivel de Satisfacción<h6>General</h6></label>
+                        <input type="number" style="width:auto;" min="1" max="10" onkeydown="return false" name="general" [(ngModel)]="desempeno.general" class="form-control" placeholder="Desempeño general">
+                    </div>
+                    <div class="form-group">
+                        <label for="actual" class="control-label">Satisfacción Actual <h6>Si actualmente estudia</h6></label>
+                        <input type="number" style="width:auto;" min="1" max="10" onkeydown="return false" name="actual" [(ngModel)]="desempeno.actual" class="form-control" placeholder="Satisfacción actual">
+                    </div>
+                    <div class="form-group">
+                        <label for="observacionesDes" class="control-label">Observaciones desempeño académico</label>
+                        <textarea wrap="off" rows="2" cols="40" style="width:auto;" name="observacionesDes" [(ngModel)]="desempeno.observaciones" class="form-control" placeholder="Observaciones desempeño académico"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group main_content">
+                <div class="form-group">           
+                    <h3>INFORMACIÓN LABORAL</h3>
+                    <div class="form-group">
+                        <label for="laboral" class="control-label">Trabajo actual. <h6>Entidad, cargo y funciones que desempeña el/la paciente</h6></label>
+                        <textarea wrap="off" rows="4" cols="35" style="width:auto;" name="laboral" [(ngModel)]="trabajo.laboral" class="form-control" placeholder="Trabajo actual, entidad, cargo y funciones que desempeña el/la paciente"></textarea>
+                    </div>
+                    <div class="table-responsive" >
+                        <p>Orden cronológico de los trabajos en los que el/la paciente ha trabajado</p>
+                        <table class="table nota">
+                            <tr> 
+                                <td><label for="entidad1" class="control-label">Entidad</label>
+                                    <input type="text" name="colegio" [(ngModel)]="trabajo1.entidad" class="form-control" placeholder="Entidad">
+                                </td>
+                                <td> <label for="cargo" class="control-label">Cargo</label>
+                                    <input type="text" name="cargo" [(ngModel)]="trabajo1.cargo" class="form-control" placeholder="Cargo">
+                                </td>
+                                <td><label for="fechat" class="control-label">Fecha</label>
+                                    <input type="date"  name="fechat" [(ngModel)]="trabajo1.fecha" class="form-control" placeholder="Fecha">
+                                </td>
+                                <td><label for="retiro" class="control-label">Motivo de retiro</label>
+                                    <input type="text" name="retiro" [(ngModel)]="trabajo1.retiro" class="form-control" placeholder="Retiro">
+                                </td>
+                            </tr>
+                        <button (click)="addTrabajo()" class="btn btn-default btn-xs"><i class="fa fa-plus" aria-hidden="true"></i></button> 
+                        <tr style="font-weight: bold" *ngIf="trabajos.length>1000"> 
+                            <td>Entidad</td>            
+                            <td>Cargo</td>            
+                            <td>Fecha</td>            
+                            <td>Motivo de retiro</td>                                            
+                        </tr>
+                        <tr *ngFor="let item of trabajos;let i = index">
+                            <td>
+                                <button (click)="delTrabajo(i)" class="btn btn-danger btn-xs"><i class="fa fa-times" aria-hidden="true"></i></button>                         
+                                {{item.entidad}}
+                            </td>
+                            <td> 
+                                {{item.cargo}}
+                            </td>
+                            <td> 
+                                {{item.fecha| date: 'dd/MM/yyyy'}}
+                            </td>
+                            <td> 
+                                {{item.retiro}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+                <div class="form-group">
+                    <h4>NIVEL DE SATISFACCIÓN EN EL TRABAJO ACTUAL</h4>
+                    <div class="form-group">
+                        <label for="personal" class="control-label">Desarrollo personal</label>
+                        <input type="number" style="width:auto;" min="1" max="10" onkeydown="return false" name="personal" [(ngModel)]="trabajo.desarrollo" class="form-control" placeholder="Desarrollo personal">
+                    </div>
+                    <div class="form-group">
+                        <label for="remuneracion" class="control-label">Remuneración</label>
+                        <input type="number" style="width:auto;" min="1" max="10" onkeydown="return false" name="remuneracion" [(ngModel)]="trabajo.remuneracion" class="form-control" placeholder="Remuneración">
+                    </div>
+                    <div class="form-group">
+                        <label for="relaciones1" class="control-label">Relaciones laborales</label>
+                        <input type="number" style="width:auto;" min="1" max="10" onkeydown="return false" name="relaciones1" [(ngModel)]="trabajo.relaciones" class="form-control" placeholder="Relaciones laborales">
+                    </div>
+                    <div class="form-group">
+                        <label for="estres" class="control-label">Estrés generado por trabajo</label>
+                        <input type="number" style="width:auto;" min="1" max="10" onkeydown="return false" name="estres" [(ngModel)]="trabajo.estres" class="form-control" placeholder="Estrés generado por trabajo">
+                    </div>
+                    <div class="form-group">
+                        <label for="observacionesTra" class="control-label">Observaciones trabajo actual</label>
+                        <textarea wrap="off" rows="1" cols="40" style="width:auto;" name="observacionesTra" [(ngModel)]="trabajo.observaciones" class="form-control" placeholder="Observaciones trabajo actual"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group nota">
+                <h3>AFICIONES, INTERESES Y RECREACIÓN<h6>FRECUENCIA: Calificación de 1 a 5 de la frecuencia con la que el/la paciente realiza cada actividad (5=diariamente; 4=dos veces por semana; 3=semanalmente; 2=dos veces al mes; 1=mensualmente o menos)<br>SATISFACCIÓN: Calificación de 1 a 5 del grado de satisfacción que le produce cada actividad.</h6></h3>
+                <div class="form-group bloque">
+                    <div class="table-responsive" >
+                        <br> <br>           
+                        <table class="table main_content">
+                            <tr> 
+                                <td>
+                                    <label for="tipact" class="control-label">Tipo actividad</label>
+                                    <input type="text" style="width:auto;" name="tipact" [(ngModel)]="aficion.tipo" class="form-control" placeholder="Tipo">
+                                </td>
+                                <td> 
+                                    <label for="freact" class="control-label">Frecuencia</label>
+                                    <input type="number" style="width:auto;" min="1" max="5" onkeydown="return false" name="freact" [(ngModel)]="aficion.frecuencia" class="form-control" placeholder="Frecuencia">
+                                </td>
+                                <td>
+                                    <label for="satact" class="control-label">Satisfacción</label>
+                                    <input type="number" style="width:auto;" min="1" max="5" onkeydown="return false" name="satact" [(ngModel)]="aficion.satisfaccion" class="form-control" placeholder="Satisfacción">
+                                </td>
+                            </tr>
+                            <button (click)="addAficion()" class="btn btn-default btn-xs"><i class="fa fa-plus" aria-hidden="true"></i></button> 
+                            <tr style="font-weight: bold" *ngIf="aficiones.length>1000"> 
+                                <td>tipo</td>            
+                                <td>Frecuencia</td>            
+                                <td>Satisfacción</td>            
+                            </tr>
+                            <tr *ngFor="let item of aficiones;let i = index">
+                                <td>
+                                    <button (click)="delAficion(i)" class="btn btn-danger btn-xs"><i class="fa fa-times" aria-hidden="true"></i></button>                         
+                                    {{item.tipo}}
+                                </td>
+                                <td> 
+                                    {{item.frecuencia}}
+                                </td>
+                                <td> 
+                                    {{item.satisfaccion}}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <h4 style="width: auto">Tipo de aficiones o intereses que el/la paciente<br>tenía en el pasado y que actualmente ya no tiene </h4>
+                    <div class="table-responsive" >
+                        <table class="table main_content">
+                            <tr> 
+                                <td>
+                                    <label for="tipactant" class="control-label">Tipo actividad</label>
+                                    <input type="text" style="width:auto;" name="tipactant" [(ngModel)]="anterior.tipo" class="form-control" placeholder="Tipo">
+                                </td>
+                                <td> 
+                                    <label for="freactant" class="control-label">Frecuencia</label>
+                                    <input type="number" style="width:auto;" min="1" max="5" onkeydown="return false" name="freactant" [(ngModel)]="anterior.frecuencia" class="form-control" placeholder="Frecuencia">
+                                </td>
+                                <td>
+                                    <label for="satactant" class="control-label">Satisfacción</label>
+                                    <input type="number" style="width:auto;" min="1" max="5" onkeydown="return false" name="satactant" [(ngModel)]="anterior.satisfaccion" class="form-control" placeholder="Satisfacción">
+                                </td>
+                            </tr>
+                            <button (click)="addAnterior()" class="btn btn-default btn-xs"><i class="fa fa-plus" aria-hidden="true"></i></button> 
+                            <tr style="font-weight: bold" *ngIf="anteriores.length>1000"> 
+                                <td>tipo</td>            
+                                <td>Frecuencia</td>            
+                                <td>Satisfacción</td>            
+                            </tr>
+                            <tr *ngFor="let item of anteriores;let i = index">
+                                <td>
+                                    <button (click)="delAnterior(i)" class="btn btn-danger btn-xs"><i class="fa fa-times" aria-hidden="true"></i></button>                         
+                                    {{item.tipo}}
+                                </td>
+                                <td> 
+                                    {{item.frecuencia}}
+                                </td>
+                                <td> 
+                                    {{item.satisfaccion}}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <h4>¿Qué tipo de aficiones o actividades de recreación<br>que no está realizando el/la paciente en la actualidad,<br> le gustaría desarrollar en el futuro?</h4>
+                    <div class="table-responsive" >
+                        <table class="table main_content">
+                            <tr> 
+                                <td>
+                                    <label for="tipactfut" class="control-label">Tipo actividad</label>
+                                    <input type="text" style="width:auto;" name="tipactfut" [(ngModel)]="futuro.tipo" class="form-control" placeholder="Tipo">
+                                </td>
+                                <td> 
+                                    <label for="freactfut" class="control-label">Frecuencia</label>
+                                    <input type="number" style="width:auto;" min="1" max="5" onkeydown="return false" name="freactfut" [(ngModel)]="futuro.frecuencia" class="form-control" placeholder="Frecuencia">
+                                </td>
+                                <td>
+                                    <label for="satactfut" class="control-label">Satisfacción</label>
+                                    <input type="number" style="width:auto;" min="1" max="5" onkeydown="return false" name="satactfut" [(ngModel)]="futuro.satisfaccion" class="form-control" placeholder="Satisfacción">
+                                </td>
+                            </tr>
+                            <button (click)="addFuturo()" class="btn btn-default btn-xs"><i class="fa fa-plus" aria-hidden="true"></i></button> 
+                            <tr style="font-weight: bold" *ngIf="futuros.length>1000"> 
+                                <td>tipo</td>            
+                                <td>Frecuencia</td>            
+                                <td>Satisfacción</td>            
+                            </tr>
+                            <tr *ngFor="let item of futuros;let i = index">
+                                <td>
+                                    <button (click)="delFuturo(i)" class="btn btn-danger btn-xs"><i class="fa fa-times" aria-hidden="true"></i></button>                         
+                                    {{item.tipo}}
+                                </td>
+                                <td> 
+                                    {{item.frecuencia}}
+                                </td>
+                                <td> 
+                                    {{item.satisfaccion}}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="satisfaccionafi" class="control-label">Nivel de satisfacción actual en aficiones, intereses y recreación:</label>
+                    <input style="width:auto;" type="number"  min="1" max="10" onkeydown="return false" name="satisfaccionafi" [(ngModel)]="nota.satisfaccionaficiones" class="form-control" placeholder="aficiones"/>
+                </div>
+            </div>
+            <div class="form-group  main_content" *ngIf= "toggleAnt">
+                <h2>OTRAS ÁREAS DE AJUSTE</h2>
+                <div class="form-group">
+                    <label for="respetar" class="control-label">Dificultades para hacerse respetar y para hacer valer sus derechos, o para expresar desacuerdo o resentimiento cuando es apropiado, o para impedir que otras personas se aprovechen</label>
+                    <textarea  wrap="off" rows="3" cols="25" name="respetar" [(ngModel)]="area.respetar" class="form-control" placeholder="Respeto"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="tristeza" class="control-label">Periodos de profunda tristeza o depresión en los que no siente ánimo para desempeñar ninguna actividad</label>
+                    <textarea  wrap="off" rows="3" cols="25" name="tristeza" [(ngModel)]="area.tristeza" class="form-control" placeholder="Tristeza"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="sexual" class="control-label">Dificultades de tipo sexual</label>
+                    <textarea  wrap="off" rows="3" cols="25" name="sexual" [(ngModel)]="area.sexual" class="form-control" placeholder="Tipo sexual"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="amistades" class="control-label">Dificultad para establecer o mantener relaciones satisfactorias de amistad con otras personas</label>
+                    <textarea  wrap="off" rows="3" cols="25" name="amistades" [(ngModel)]="area.amistades" class="form-control" placeholder="Amistades"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="relaciones2" class="control-label">Dificultada para establecer relaciones afectivas con otras personas</label>
+                    <textarea  wrap="off" rows="3" cols="25" name="relaciones2" [(ngModel)]="area.relaciones" class="form-control" placeholder="Relaciones"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="temor" class="control-label">Temor muy intenso ante alguna situación u objeto que interfiera con la actividad normal</label>
+                    <textarea  wrap="off" rows="3" cols="25" name="temor" [(ngModel)]="area.temor" class="form-control" placeholder="Temor"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="alcohol" class="control-label">Problemas para controlar el consumo de bebidas alcohólicas</label>
+                    <textarea  wrap="off" rows="3" cols="25" name="alcohol" [(ngModel)]="area.alcohol" class="form-control" placeholder="Alcohol"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="tto" class="control-label">Programa de tratamiento por consumo de bebidas alcohólicas</label>
+                    <textarea  wrap="off" rows="3" cols="25" name="tto" [(ngModel)]="area.tratamiento" class="form-control" placeholder="Tratamiento alcohol"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="impresion" class="control-label">IMPRESIÓN DIAGNÓSTICA</label>
+                <textarea  wrap="off" rows="3" cols="70" name="impresion" [(ngModel)]="nota.impresion" class="form-control" placeholder="Impresión Diagnóstica"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="conducta" class="control-label">CONDUCTA O PLAN DE TRATAMIENTO</label>
+                <textarea  wrap="off" rows="3" cols="70" name="conducta" [(ngModel)]="nota.conducta" class="form-control" placeholder="Plan de tratamiento"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="pronostico" class="control-label">PRONÓSTICO</label>
+                <textarea  wrap="off" rows="3" cols="70" name="pronostico" [(ngModel)]="nota.pronostico" class="form-control" placeholder="Pronóstico"></textarea>
+            </div>
+            <div class="form-group">                
+                <flash-messages></flash-messages>
+                <a class="btn btn-warning" [routerLink]="['/historia', pacienteId]">Cancelar</a>
+                <button class="btn btn-primary">Guardar</button> 
+            </div>
+        </form>
+    </div>
+</div>

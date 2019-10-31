@@ -1,0 +1,208 @@
+<a [routerLink]="['/dashboard/date','new']" [queryParams]="{user: userId,name:name,viewDate:viewDate}"  class="btn btn-default">Nueva cita</a>
+  <h1>{{title}}</h1>
+  <hr>
+<mwl-demo-utils-calendar-header
+  [(view)]="view"
+  [(viewDate)]="viewDate"
+  (viewDateChange)="mostrar()"
+  (viewChange)="mostrar()">
+</mwl-demo-utils-calendar-header>
+
+<ng-template #loading>
+  <div class="text-center spinner-1">
+    <!-- <i class="fa fa-spin fa-spinner fa-5x"></i> -->
+    <!-- <i class="fa fa-spin fa-spinner fa-5x"></i> -->
+    
+    <br>
+    ---Cargando las citas---
+  </div>
+</ng-template>
+
+<!-- <div class="container" *ngIf="muestra;else loading">  -->
+ <div *ngIf="events;else loading;let events">  
+  <div [ngSwitch]="view">
+    <mwl-calendar-month-view
+      *ngSwitchCase="'month'"
+      [viewDate]="viewDate"
+      [events]="events"
+      [activeDayIsOpen]="activeDayIsOpen"
+      (dayClicked)="dayClicked($event.day)"
+      (eventClicked)="eventClicked($event.event)">
+    </mwl-calendar-month-view>
+    <mwl-calendar-week-view
+      *ngSwitchCase="'week'"
+      [viewDate]="viewDate"
+      [events]="events"
+      (eventClicked)="eventClicked($event.event)">
+      <!-- precision="minutes" -->
+    </mwl-calendar-week-view>
+    <mwl-calendar-day-view
+      *ngSwitchCase="'day'"
+      [viewDate]="viewDate"
+      [events]="events"
+      (eventClicked)="eventClicked($event.event)">
+    </mwl-calendar-day-view>
+  </div>
+</div>  
+<!-- </div>  -->
+
+<!-- 
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Paciente</th>
+         <th>Color primario</th>
+        <th>Color Secundario</th> 
+        <th>Inicia a las</th>
+        <th>Termina a las</th>
+        <th>Acciones de la cita</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let event of events; let index = index">
+        <td>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="event.title"
+            (keyup)="refresh.next()">
+        </td>
+        <td>
+          <input
+            type="color"
+            [(ngModel)]="event.color.primary"
+            (change)="refresh.next()">
+        </td>
+        <td>
+          <input
+            type="color"
+            [(ngModel)]="event.color.secondary"
+            (change)="refresh.next()">
+        </td> 
+        <td>
+          <mwl-demo-utils-date-time-picker
+            [(date)]="event.start"
+            (dateChange)="refresh.next()"
+            placeholder="Not set">
+          </mwl-demo-utils-date-time-picker>
+        </td>
+        <td>
+          <mwl-demo-utils-date-time-picker
+            [(date)]="event.end"
+            (dateChange)="refresh.next()"
+            placeholder="Not set">
+          </mwl-demo-utils-date-time-picker>
+        </td>
+        <td>
+          <button
+            class="btn btn-default"
+            (click)="addDate()">
+            Guardar
+          </button>
+          <button
+            class="btn btn-danger"
+            (click)="events.splice(index, 1); refresh.next()">
+            Cancelar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+ -->
+<!-- 
+ <mwl-demo-utils-calendar-header
+  [(view)]="view"
+  [(viewDate)]="viewDate">
+</mwl-demo-utils-calendar-header>
+
+<context-menu #basicMenu>
+  <ng-template contextMenuItem (execute)="addEvent($event.item)">
+    Add event
+  </ng-template>
+</context-menu>
+
+<ng-template
+  #monthCellTemplate
+  let-day="day"
+  let-openDay="openDay"
+  let-locale="locale"
+  let-tooltipPlacement="tooltipPlacement"
+  let-highlightDay="highlightDay"
+  let-unhighlightDay="unhighlightDay"
+  let-eventClicked="eventClicked">
+
+  <div class="fill-height" [contextMenu]="basicMenu" [contextMenuSubject]="day.date">
+    <div class="cal-cell-top">
+      <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{ day.badgeTotal }}</span>
+      <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+    </div>
+    <div class="cal-events">
+      <div
+        class="cal-event"
+        *ngFor="let event of day.events"
+        [style.backgroundColor]="event.color.primary"
+        [ngClass]="event?.cssClass"
+        (mouseenter)="highlightDay.emit({event: event})"
+        (mouseleave)="unhighlightDay.emit({event: event})"
+        [mwlCalendarTooltip]="event.title | calendarEventTitle:'monthTooltip':event"
+        [tooltipPlacement]="tooltipPlacement"
+        (click)="$event.stopPropagation(); eventClicked.emit({event: event})">
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #weekHeaderTemplate let-days="days" let-locale="locale" let-dayHeaderClicked="dayHeaderClicked">
+  <div class="cal-day-headers">
+    <div
+      class="cal-header"
+      *ngFor="let day of days"
+      [class.cal-past]="day.isPast"
+      [class.cal-today]="day.isToday"
+      [class.cal-future]="day.isFuture"
+      [class.cal-weekend]="day.isWeekend"
+      [class.cal-drag-over]="day.dragOver"
+      (click)="dayHeaderClicked.emit({day: day})"
+      [contextMenu]="basicMenu"
+      [contextMenuSubject]="day.date">
+      <b>{{ day.date | calendarDate:'weekViewColumnHeader':locale }}</b><br>
+      <span>{{ day.date | calendarDate:'weekViewColumnSubHeader':locale }}</span>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #dayHourSegmentTemplate let-segment="segment" let-locale="locale">
+  <div
+    class="cal-hour-segment"
+    [ngClass]="segment.cssClass"
+    [contextMenu]="basicMenu"
+    [contextMenuSubject]="segment.date">
+    <div [hidden]="!segment.isStart" class="cal-time">
+      {{ segment.date | calendarDate:'dayViewHour':locale }}
+    </div>
+  </div>
+</ng-template>
+
+<div [ngSwitch]="view">
+  <mwl-calendar-month-view
+    *ngSwitchCase="'month'"
+    [viewDate]="viewDate"
+    [events]="events"
+    [refresh]="refresh"
+    [cellTemplate]="monthCellTemplate">
+  </mwl-calendar-month-view>
+  <mwl-calendar-week-view
+    *ngSwitchCase="'week'"
+    [viewDate]="viewDate"
+    [events]="events"
+    [refresh]="refresh"
+    [headerTemplate]="weekHeaderTemplate">
+  </mwl-calendar-week-view>
+  <mwl-calendar-day-view
+    *ngSwitchCase="'day'"
+    [viewDate]="viewDate"
+    [events]="events"
+    [refresh]="refresh"
+    [hourSegmentTemplate]="dayHourSegmentTemplate">
+  </mwl-calendar-day-view>
+</div> -->

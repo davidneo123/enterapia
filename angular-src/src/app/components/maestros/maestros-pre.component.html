@@ -1,0 +1,66 @@
+<header>
+    <ul class="nav nav-tabs">
+  <li role="presentation"><a role="item" [routerLink]="['/maestros/register']">Usuarios</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/pacientes']">Pacientes</a></li>
+        <li role="presentation" class="divider"></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','estado_civil']">Estado Civil</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','barrio']">Barrio</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','localidad']">Localidad</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','ciudad']">Ciudades</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','genero']">Géneros</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','diagnosticos']">Diagnósticos</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','si_no']">Si/No</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','tipdoc']">Tipo Documento</a></li>    
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','aseguradora']">Aseguradora</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','vinculacion']">Vinculación</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','ocupacion']">Ocupaciones</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','parentezco']">Parentezco</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','escala']">Escala</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','tipnot']">Tipo Nota</a></li>        
+    </ul>
+</header>
+
+<main>
+    <router-outlet></router-outlet>
+</main>
+<!-- <div class="container" >
+    
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" id="menu" aria-extended="true">Seleccione el maestro por favor
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="menu">
+                <li><a href="#">Estado civil</a></li>
+                <li><a href="maestros/maestro/genero">Sexo</a></li>
+                <li><a (click)="navigate('pais')">Paises</a></li>
+                <li class="divider"></li>
+                <li><a (click)="navigate('eps')">EPS</a></li>
+                 <li><a [routerLink]="['/maestros/maestro', 'departamento']">departamento</a></li>
+       </ul>
+    </div>
+</div>
+<br> 
+
+<div class="container" style="margin-bottom: 15px;">
+  <div class="btn-toolbar bs-component" style="margin: 0;">
+    <div class="btn-group">
+      <a  class="btn btn-default">Seleccione</a>
+      <a  class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/register']">Usuarios</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/pacientes']">Pacientes</a></li>
+        <li role="presentation" class="divider"></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','eps']">EPS</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','estado_civil']">EStado Civil</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','pais']">Paises</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','departamento']">Departamentos</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','ciudad']">Ciudades</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','genero']">Géneros</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','diagnosticos']">Diagnósticos</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','si_no']">Si/No</a></li>
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','tipdoc']">Tipo Documento</a></li>    
+        <li role="presentation"><a role="item" [routerLink]="['/maestros/maestro','escala']">Escala</a></li>      
+      </ul>
+    </div>
+  </div>
+</div>
+<br>  -->
