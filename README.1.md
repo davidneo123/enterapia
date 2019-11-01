@@ -1,5 +1,5 @@
 # AngularSrc
-
+//  "start": "sudo service mongod start && nodemon app"
 pendientes david:
 
 Ocultar rutas segun perfiles: En html navbar y guard
