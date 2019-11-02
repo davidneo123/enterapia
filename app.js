@@ -6,10 +6,35 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const config = require('./config/database');
 
-// Connect To Database
-mongoose.connect(config.database);
+/* const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://davidarbe:71261757@cluster0-u5dbz.mongodb.net/test?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true });
+client.connect(err => {
+  const collection = client.db("historia-clinica").collection("users");
+  // perform actions on the collection object
+  client.close();
+}); 
 
-// On Connection
+var MongoClient = require('mongodb').MongoClient;
+
+// Connect to the db
+MongoClient.connect("mongodb+srv://davidarbe:71261757@cluster0-u5dbz.mongodb.net/test?retryWrites=true&w=majority", function (err, db) {
+   
+     if(err) throw err;
+
+     //Write databse Insert/Update/Query code here..
+                
+});*/
+
+
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env.MONGODB_URI || config.database, { useNewUrlParser: true });
+//Connect To Database
+//mongoose.connect(process.env.MONGODB_URI || config.database, { dbName: 'test' }).then(() => {
+//       console.log('Connection to the Atlas Cluster is successful!')
+//  })    .catch((err) => console.error(err));;
+
+//On Connection
 mongoose.connection.on('connected', () => {
     console.log('Connected to database ' + config.database);
 });
