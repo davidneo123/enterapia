@@ -5,7 +5,6 @@ import { Router, ActivatedRoute} from '@angular/router';
 import { slideInOutAnimation } from '../_animations/index';
 import { Subscription } from 'rxjs/Subscription';
 import { PubSubService} from '../../services/pub-sub.service';
-import { DatesService} from '../../services/dates.service';
 import { MaestrosService} from '../../services/maestros.service';
 import { FlashMessagesService} from 'angular2-flash-messages';
 import { Historia } from './historia.interface'
@@ -15,7 +14,7 @@ import { Historia } from './historia.interface'
   moduleId: module.id.toString(),
   templateUrl: './nota.component.html',
   styleUrls: ['./nota.component.css','../_content/app.less'],//,'../_content/app.less'
-  providers:[HistoriaService,PubSubService,DatesService,MaestrosService],
+  providers:[HistoriaService,PubSubService,MaestrosService],
     // make fade in animation available to this component
   animations: [slideInOutAnimation],
 
@@ -30,9 +29,8 @@ export class NotaComponent implements OnInit {
    subscription: Subscription;
    nombreU: String
    nombreC: String
-   dateId: String;
-   notaId:String;
-   userId:String;
+   notaId:String
+   userId:String
    pacienteId:String
    toggleAnt:Boolean=true
    tipos =[]
@@ -68,7 +66,6 @@ export class NotaComponent implements OnInit {
     private route: ActivatedRoute,
     private pubSubService: PubSubService,
     private flashMessage:FlashMessagesService,
-    private dateService:DatesService,
     private maestrosService:MaestrosService
    ) { 
     if(this.route.parent!=null && this.route.parent!=undefined){
@@ -84,20 +81,20 @@ export class NotaComponent implements OnInit {
       this.tipos=resource
     })
    this.notaId = String(this.route.snapshot.params['id']);
-   this.userId = String(this.route.snapshot.queryParams['user']);
-   this.dateId = String(this.route.snapshot.queryParams['dateId']); 
-   this.nombreU = String(this.route.snapshot.queryParams['nombreU']); 
-   this.nombreC = String(this.route.snapshot.queryParams['nombreC']); 
+   //this.userId = String(this.route.snapshot.queryParams['user']);
+   //this.dateId = String(this.route.snapshot.queryParams['dateId']); 
+   //this.nombreU = String(this.route.snapshot.queryParams['nombreU']); 
+   //this.nombreC = String(this.route.snapshot.queryParams['nombreC']); 
    if (this.notaId!=='new') {
-      this.title = 'Agregar evolución Doctor: '+this.nombreU;
+      this.title = 'Agregar evolución';
       this.getHistoriaById(this.notaId);
     } else {
       this.nota.act=true 
       this.nota.pac=this.pacienteId
       this.nota.user=this.userId
-      this.nota.nombreU=this.nombreU  
-      this.nota.nombreC=this.nombreC  
-      this.title = 'Agregar historia clinica Doctor: '+this.nombreU;
+      this.nota.nombreU="Doctor" 
+      this.nota.nombreC='paciente' 
+      this.title = 'Agregar historia clinica'
       console.log(this.nota)
     }
   } 
@@ -123,21 +120,6 @@ export class NotaComponent implements OnInit {
         this.area=data.areasajuste || {}                
       })
     }
-  
-  
-markDate(notaId){
-  this.dateService.putDate({nota:notaId,_id:this.dateId})
-  .subscribe(data =>{
-  if(data.status=201){
-    this.flashMessage.show('Historia clínica registrada con éxito', {cssClass: 'alert-success', timeout: 930000});
-    this.router.navigate(['/historia', this.pacienteId]);
-    this.pubSubService.publish('notas-updated');
-  } else {
-    this.flashMessage.show('Algo salió mal :-(', {cssClass: 'alert-danger', timeout: 30000});
-    this.router.navigate(['/historia', this.pacienteId]);
-  }
-})
-}
 
 addArrays (){
 //objetos:
@@ -170,11 +152,13 @@ addNota(){
   }
   if(this.notaId=='new'){
      console.log(this.nota)
-    this.historiaService.addHistoria(this.nota)
+     this.subscription= this.historiaService.addHistoria(this.nota)
     .subscribe(data =>{
+      console.log(data)
       if(data.status=201){
-        console.log(data)
-     this.markDate(data._id)
+        this.flashMessage.show('Historia clínica actualizado con éxito', {cssClass: 'alert-success', timeout: 90000});
+        this.router.navigate(['/historia', this.pacienteId]);
+        this.pubSubService.publish('notas-updated');
       } else {
         this.flashMessage.show('Algo salió mal :-(', {cssClass: 'alert-danger', timeout: 30000});
         this.router.navigate(['/historia', this.pacienteId]);

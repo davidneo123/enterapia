@@ -5,7 +5,6 @@ import { fadeInAnimation } from '../_animations/index';
 import { Subscription } from 'rxjs/Subscription';
 import {PubSubService} from '../../services/pub-sub.service';
 import {FlashMessagesService} from 'angular2-flash-messages';
-import { DatesService} from '../../services/dates.service';
 
 @Component({
     moduleId: module.id.toString(),
@@ -15,7 +14,7 @@ import { DatesService} from '../../services/dates.service';
 
     // make fade in animation available to this component
     animations: [fadeInAnimation],
-    providers:[HistoriaService,PubSubService,DatesService],
+    providers:[HistoriaService,PubSubService],
     // attach the fade in animation to the host (root) element of this component
     host: { '[@fadeInAnimation]': '' }
 })
@@ -23,11 +22,8 @@ import { DatesService} from '../../services/dates.service';
 export class HistoriaComponent implements OnInit,OnDestroy {
         historia: any=[];
         subscription: Subscription;
-        dateSub: Subscription
         title:String;
         historiacount: Number;
-      //  @input()tipo: String;
-        dates: any = []
         private routeSub:Subscription;
         private id:String;
 
@@ -36,8 +32,7 @@ export class HistoriaComponent implements OnInit,OnDestroy {
     private router: Router,
     private pubSubService: PubSubService,
     private flashMessage:FlashMessagesService,
-    private route:ActivatedRoute,
-    private datesService:DatesService    
+    private route:ActivatedRoute, 
     ) {
         this.routeSub = this.route.params.subscribe(params => {
             this.title = 'Historia paciente '//+ tipo.toUpperCase( )
@@ -65,7 +60,6 @@ export class HistoriaComponent implements OnInit,OnDestroy {
             this.historia = res
             this.historiacount=+this.historia.length
             console.log(this.historia)
-        //    this.getDates(this.id)
         })
     }
     
@@ -73,7 +67,6 @@ export class HistoriaComponent implements OnInit,OnDestroy {
     // unsubscribe to ensure no memory leaks
      console.log('se destruyo el servicio')
      if(this.subscription){this.subscription.unsubscribe()}
-     if(this.dateSub){this.dateSub.unsubscribe()}
      if(this.routeSub){this.routeSub.unsubscribe()}  
     }
 }

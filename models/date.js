@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const DateSchema = new Schema({
     pac: {
         type: mongoose.Schema.Types.ObjectId,
-            // required:true
+        // required:true
     },
     nombreC: {
         type: String
@@ -14,10 +14,8 @@ const DateSchema = new Schema({
         type: String
     },
     user: {
-        type:  mongoose.Schema.Types.ObjectId, // here you set the author ID
-        // from the Author colection, 
-        // so you can reference it
-    required: true
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
     },
     co1: {
         type: String
@@ -33,33 +31,33 @@ const DateSchema = new Schema({
     end: {
         type: Date
     },
-    nota:{
+    nota: {
         type: mongoose.Schema.Types.ObjectId
     },
     created_at: {
-      type: Date
+        type: Date
     },
     updated_at: {
-      type: Date,
-      default: Date.now
+        type: Date,
+        default: Date.now
     },
     offset: {
         type: String
     }
-  })
+})
 
 // Sets the created_at parameter equal to the current time
-DateSchema.pre('save', function(next){
+DateSchema.pre('save', function(next) {
     console.log('en save')
-  now = new Date()
-  same=this
-  same.updated_at = now
-  if ( !same.created_at ) {
-    same.created_at = now;
-    same.offset= now.getTimezoneOffset() 
- }
-  next()
- }); 
+    now = new Date()
+    same = this
+    same.updated_at = now
+    if (!same.created_at) {
+        same.created_at = now;
+        same.offset = now.getTimezoneOffset()
+    }
+    next()
+});
 
 const Date1 = module.exports = mongoose.model('Date', DateSchema);
 
