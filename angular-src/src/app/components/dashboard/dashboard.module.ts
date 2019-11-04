@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'angular-calendar';
 import { RouterModule, Routes } from '@angular/router';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { CalendarUtils } from './calendar-utils/module';
+//import { CalendarUtils } from './calendar-utils/module';
 import { DashboardComponent } from './dashboard.component';
 import { DashboardPreComponent } from './dashboard-pre.component';
 import { DateComponent } from './date.component';
@@ -23,7 +23,7 @@ import {AuthGuard} from '../../guards/auth.guard';
       CommonModule,
       FormsModule,
       CalendarModule.forRoot(),
-      CalendarUtils,
+    //  CalendarUtils,
       RouterModule.forChild(routes),
       FlashMessagesModule
     ],

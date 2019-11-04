@@ -1,4 +1,4 @@
-        <div class="generic-table table-responsive" *ngIf="dates">
+<!--        <div class="generic-table table-responsive" *ngIf="dates">
             <b>Atender Citas:</b>
             <table class="generic-table table table-bordered table-border table-hover">
                 <tr class="success">
@@ -6,7 +6,7 @@
                     <th>Fin</th>
                     <th>Profesional</th>
                     <th class="edit-column">Atender</th>
-                    <!-- <th>Fecha Asignada</th> -->
+                     <th>Fecha Asignada</th> 
                     <th>Fecha Modificada</th>
                 </tr>
                 <tr *ngFor="let date of dates">
@@ -14,33 +14,33 @@
                     <td>{{date.end| date: 'dd/MM/yyyy hh:mm a' : date.offset}}</td>
                     <td>{{date.nombreU}}</td>
                     <td><a [routerLink]="['nota', 'new']" [queryParams]="{user: date.user,dateId:date._id,nombreU:date.nombreU,nombreC:date.nombreC}" class="btn btn-xs btn-default">Atender Cita</a></td> 
-                    <!-- <td>{{date.created_at| date: 'dd/MM/yyyy hh:mm a' : date.offset}}</td> -->
+                    <td>{{date.created_at| date: 'dd/MM/yyyy hh:mm a' : date.offset}}</td> 
                     <td>{{date.updated_at| date: 'dd/MM/yyyy hh:mm a' : date.offset}}</td>
-                    <!-- paciente:date.pac, -->
                 </tr>
             </table>
-        </div>
-        <div class="table-responsive">
-            <h1>Historial de notas:</h1> 
-                <table class="generic-table table table-bordered table-border table-hover">
-                    <tr class="success">
-                        <th>Fecha y hora nota</th>
-                        <th>Fecha y hora Modificada</th>
-                        <th>Profesional</th>
-                        <th class="edit-column">Ver nota</th>
-                    </tr>
-                    <tr *ngFor="let nota of historia">
-                        <td>{{nota.created_at| date: 'dd/MM/yyyy hh:mm a' : nota.offset}}</td>
-                        <td>{{nota.updated_at| date: 'dd/MM/yyyy hh:mm a' : nota.offset}}</td>
-                        <td>{{nota.nombreU}}</td>
-                        <td><a [routerLink]="['nota', nota._id]" [queryParams]="{nombreU:nota.nombreU}" >
-                        <i class="fa fa-address-card-o" aria-hidden="true"></i>
-                        {{nota.motivo}}
-                        </a></td>
-                    </tr>
-                </table>
-            </div>
-        <h3>Cantidad: {{historiacount}}</h3>
-        <div class="view-side-form">
-            <router-outlet></router-outlet>
-        </div>
+        </div>-->
+<div class="table-responsive">
+    <h1>Historial de notas:</h1>
+    <table class="generic-table table table-bordered table-border table-hover">
+        <tr class="success">
+            <th>Fecha y hora nota</th>
+            <th>Fecha y hora Modificada</th>
+            <th>Profesional</th>
+            <th class="edit-column">Ver nota</th>
+        </tr>
+        <tr *ngFor="let nota of historia">
+            <td>{{nota.created_at| date: 'dd/MM/yyyy hh:mm a' : nota.offset}}</td>
+            <td>{{nota.updated_at| date: 'dd/MM/yyyy hh:mm a' : nota.offset}}</td>
+            <td>{{nota.nombreU}}</td>
+            <td>
+                <a [routerLink]="['nota', nota._id]" [queryParams]="{nombreU:nota.nombreU}">
+                    <i class="fa fa-address-card-o" aria-hidden="true"></i> {{nota.motivo}}
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>
+<h3>Cantidad: {{historiacount}}</h3>
+<div class="view-side-form">
+    <router-outlet></router-outlet>
+</div>

@@ -15,7 +15,10 @@ import { PacienteComponent } from './components/pacientes/paciente.component';
 import { PruebaComponent } from './components/prueba/prueba.component';
 import { ItemComponent } from './components/prueba/item.component';
 import {AuthGuard} from './guards/auth.guard';
-
+import { HistoriaComponent } from './components/historia/historia.component';
+import { NotaComponent } from './components/historia/nota.component';
+import { HistoriaPreComponent } from './components/historia/historia-pre.component';
+import { PacienteViewComponent } from './components/historia/paciente-view.component';
 
 const appRoutes: Routes =  [
   //{path:'profile', component: ProfileComponent, canActivate:[AuthGuard]},{path:'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
@@ -32,8 +35,16 @@ const appRoutes: Routes =  [
         {path:'paciente-edit/:id', component: PacienteComponent,canActivate:[AuthGuard]}
         ]
     },
-  { path: 'dashboard', loadChildren: 'app/components/dashboard/dashboard.module#DashboardModule' , canActivate:[AuthGuard],data: { roles: ["super","admon"] } },
-  { path: 'historia', loadChildren: 'app/components/historia/historia.module#HistoriaModule' , canActivate:[AuthGuard],data: { roles: ["super","psico"] } },
+    {path: 'historia', component: HistoriaPreComponent,canActivate:[AuthGuard],
+    children: [
+    {path: ':id', component: HistoriaComponent,canActivate:[AuthGuard],     
+    children:[
+      {path: 'nota/:id', component: NotaComponent,canActivate:[AuthGuard]
+    }]
+  }]
+},
+  //{ path: 'dashboard', loadChildren: 'app/components/dashboard/dashboard.module#DashboardModule' , canActivate:[AuthGuard],data: { roles: ["super","admon"] } },
+  //{ path: 'historia', loadChildren: 'app/components/historia/historia.module#HistoriaModule' , canActivate:[AuthGuard]},
         // otherwise redirect to home
   { path: '**', redirectTo: '' }
 ]

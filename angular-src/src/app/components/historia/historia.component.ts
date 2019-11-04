@@ -52,20 +52,20 @@ export class HistoriaComponent implements OnInit,OnDestroy {
             .subscribe(() => this.getNotas());
         }
         
-    getDates(id){
+   /* getDates(id){
         this.dateSub= this.datesService.getPenDates(id).subscribe(res=>{
             this.dates=res
             console.log(this.dates)
         })
         
-    }
+    }*/
     
     getNotas(){
         this.historiaService.getNotas(this.id).subscribe(res => {
             this.historia = res
             this.historiacount=+this.historia.length
             console.log(this.historia)
-            this.getDates(this.id)
+        //    this.getDates(this.id)
         })
     }
     

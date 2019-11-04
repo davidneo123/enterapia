@@ -32,12 +32,12 @@ export class DatesService {
       .map(res => res.json());
     }
 
-  getPenDates(pac){
+  /*getPenDates(pac){
       let ep = this.prepEndpoint('dates/datesNota/'+pac);
       return this.http.get(ep)     
       .map(res => res.json())
       .map((res: Array<any>) => res.filter(date => date.nota===undefined))
-      }
+      }*/
 
   getDateById(id){
     let ep = this.prepEndpoint('dates/date/'+ id);

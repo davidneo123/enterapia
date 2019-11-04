@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { HistoriaModule } from './components/historia/historia.module';
-import { DashboardModule} from './components/dashboard/dashboard.module';
+//import { DashboardModule} from './components/dashboard/dashboard.module';
 
 import {ValidateService} from './services/validate.service';
 import {AuthService} from './services/auth.service';
@@ -30,7 +30,7 @@ import { AppRoutingModule, routedComponents } from './app-routing.module';
     AppRoutingModule,
     FlashMessagesModule,
     BrowserAnimationsModule,
-    DashboardModule,
+   // DashboardModule,
     HistoriaModule,
   ], 
   providers: [ValidateService,AuthGuard,AuthService],
